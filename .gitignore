@@ -1,0 +1,18 @@
+# Dépendances
+node_modules/
+
+# Secrets : ne jamais publier
+.env
+.env.*
+!.env.example
+
+# Fichiers système et éditeur
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Builds et logs
+dist/
+build/
+*.log

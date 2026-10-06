@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DAF — Ta box, faite pour toi</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff7f9;--ink:#2b1230;--soft:#6b5470;--rose:#f7d3df;--berry:#b0245a;--lilac:#d9c8f5;--card:#fff;--line:#efd9e1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d0f22;--ink:#fbeef3;--soft:#c9b3cf;--rose:#4a2140;--berry:#ff7fae;--lilac:#3b2a5c;--card:#2a1731;--line:#4a2e52}}
+:root[data-theme="dark"]{--bg:#1d0f22;--ink:#fbeef3;--soft:#c9b3cf;--rose:#4a2140;--berry:#ff7fae;--lilac:#3b2a5c;--card:#2a1731;--line:#4a2e52}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"DM Serif Display",Georgia,serif;font-weight:400;line-height:1.08;margin:0}
+h1{font-size:clamp(2.6rem,7vw,5rem)}h2{font-size:clamp(1.9rem,4vw,2.8rem)}
+p{max-width:60ch}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--berry);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-family:"DM Serif Display",serif;font-size:2rem;color:var(--berry);text-decoration:none;letter-spacing:.04em}
+nav a{margin-left:18px;text-decoration:none;font-weight:500}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding:30px 0 70px}
+.hero p{color:var(--soft);font-size:1.15rem}
+.btn{display:inline-block;background:var(--berry);color:#fff;border:0;border-radius:99px;padding:14px 26px;font:700 1rem "DM Sans",sans-serif;cursor:pointer;text-decoration:none}
+:root[data-theme="dark"] .btn{color:#2b1230}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#2b1230}}
+.stage{background:var(--rose);border-radius:36px;padding:26px;text-align:center}
+.stage svg{width:100%;max-width:380px;height:auto}
+.field{display:flex;flex-direction:column;gap:6px;text-align:left;margin-top:14px}
+label{font-weight:700;font-size:.95rem}
+input[type=text]{font:inherit;padding:12px 16px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);width:100%}
+.sw{display:flex;gap:10px;flex-wrap:wrap}
+.sw button{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer;box-shadow:0 0 0 1px var(--line)}
+.sw button[aria-pressed=true]{border-color:var(--ink)}
+section{padding:60px 0}
+.head{display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:16px;margin-bottom:26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.prod{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:16px;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.prod[aria-pressed=true]{border-color:var(--berry);background:var(--rose)}
+.prod .e{font-size:2.2rem;display:block}.prod b{display:block;margin-top:6px}.prod span.p{color:var(--soft)}
+.total{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));margin-top:22px;background:var(--ink);color:var(--bg);border-radius:22px;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.total small{opacity:.75;display:block}
+.total .btn{background:var(--berry)}
+.seg{display:inline-flex;border:2px solid var(--line);border-radius:99px;overflow:hidden}
+.seg button{border:0;background:none;color:var(--ink);padding:8px 16px;font:700 .9rem "DM Sans",sans-serif;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--berry);color:#fff}
+.occ{display:flex;flex-wrap:wrap;gap:10px}
+.occ span{background:var(--lilac);padding:10px 18px;border-radius:99px;font-weight:500}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.steps div{border-top:4px solid var(--berry);padding-top:14px}
+.steps p{color:var(--soft);margin:.4em 0 0}
+#msg{margin-top:14px;padding:14px 18px;border-radius:16px;background:var(--lilac);display:none}
+footer{padding:40px 0;color:var(--soft);border-top:1px solid var(--line);font-size:.95rem}
+@media (max-width:760px){.hero,.steps{grid-template-columns:1fr}nav{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="#">DAF</a><nav><a href="#creer">Crée ta box</a><a href="#occasions">Occasions</a><a href="#comment">Comment ça marche</a></nav></header>
+
+<div class="hero">
+  <div>
+    <h1>Ce n’est pas une boîte comme les autres. C’est ma boîte.</h1>
+    <p style="margin:18px 0 26px">Choisis tes produits, écris un prénom ou un surnom sur la boîte, et offre un cadeau qui ressemble vraiment à la personne. Livraison en France, au Mali et au Sénégal.</p>
+    <a class="btn" href="#creer">Crée ta box</a>
+  </div>
+  <div class="stage">
+    <svg viewBox="0 0 320 250" role="img" aria-label="Aperçu de ta box personnalisée">
+      <ellipse cx="160" cy="232" rx="118" ry="10" fill="#000" opacity=".1"/>
+      <rect id="body" x="42" y="110" width="236" height="118" rx="10" fill="#b0245a"/>
+      <rect id="lid" x="30" y="72" width="260" height="52" rx="10" fill="#b0245a"/>
+      <rect x="30" y="112" width="260" height="12" fill="#000" opacity=".12"/>
+      <rect x="146" y="72" width="28" height="156" fill="#fff" opacity=".85"/>
+      <path d="M160 72 C120 20 84 30 100 58 C110 74 150 72 160 72Z M160 72 C200 20 236 30 220 58 C210 74 170 72 160 72Z" fill="#fff" opacity=".9"/>
+      <text id="nm" x="88" y="104" text-anchor="middle" font-family="DM Serif Display,serif" font-size="22" fill="#fff">Ma box</text>
+    </svg>
+    <div class="field"><label for="name">Prénom ou surnom sur la boîte</label><input id="name" type="text" maxlength="14" placeholder="Ex : Fanta, Ma Chérie…"></div>
+    <div class="field"><label id="cl">Couleur de la boîte</label>
+      <div class="sw" role="group" aria-labelledby="cl" id="sw"></div></div>
+  </div>
+</div>
+
+<section id="creer">
+  <div class="head"><div><h2>Remplis ta box</h2><p style="color:var(--soft);margin:8px 0 0">Touche un produit pour l’ajouter, touche-le encore pour le retirer.</p></div>
+  <div class="seg" role="group" aria-label="Devise"><button data-c="EUR" aria-pressed="true">EUR</button><button data-c="XOF" aria-pressed="false">FCFA</button></div></div>
+  <div class="grid" id="grid"></div>
+  <div class="total" aria-live="polite"><div><strong id="tt">0 €</strong><small id="td">Ajoute au moins un produit</small></div><button class="btn" id="go">Voir ma commande</button></div>
+  <div id="msg" role="status"></div>
+</section>
+
+<section id="occasions">
+  <h2 style="margin-bottom:22px">Pour chaque occasion</h2>
+  <div class="occ"><span>Anniversaire</span><span>Saint-Valentin</span><span>Fête des mères</span><span>Naissance</span><span>Diplôme</span><span>Mariage</span><span>Ramadan</span><span>Noël</span><span>Remerciement</span><span>Sans raison</span></div>
+</section>
+
+<section id="comment">
+  <h2 style="margin-bottom:26px">Comment ça marche</h2>
+  <div class="steps">
+    <div><h3>1. Compose</h3><p>Choisis la couleur, écris le prénom, ajoute les produits que tu veux.</p></div>
+    <div><h3>2. Vérifie</h3><p>Tu vois ta box et le prix final avant de commander.</p></div>
+    <div><h3>3. Offre</h3><p>Nous préparons et livrons la box, en France, au Mali ou au Sénégal.</p></div>
+  </div>
+</section>
+<footer>DAF · Box cadeaux personnalisables · Livraison en France, au Mali et au Sénégal. Version de démonstration : la commande n’est pas encore active.</footer>
+</div>
+
+<script>
+const P=[["🕯️","Bougie parfumée",12],["☕","Mug personnalisé",14],["📿","Bracelet doré",18],["💄","Gloss et baume",9],["🌙","Pyjama satin",29],["🧸","Peluche douce",16],["🌸","Parfum",35],["💐","Fleurs artificielles",11],["📖","Livre",15],["🎀","Masque cheveux",13]];
+const COL=[["Framboise","#b0245a"],["Rose poudré","#e88fb0"],["Lilas","#9b7fd6"],["Vert sauge","#7fa58a"],["Bleu ciel","#7fb2e0"]];
+const BASE=8,PERSO=4,RATE=655.957;let cur="EUR";const sel=new Set();
+const $=id=>document.getElementById(id);
+const fmt=e=>cur==="EUR"?e.toFixed(2).replace(".",",").replace(",00","")+" €":(Math.round(e*RATE/5)*5).toLocaleString("fr-FR")+" FCFA";
+const g=$("grid");
+P.forEach((p,i)=>{const b=document.createElement("button");b.className="prod";b.setAttribute("aria-pressed","false");
+b.innerHTML=`<span class="e">${p[0]}</span><b>${p[1]}</b><span class="p"></span>`;
+b.onclick=()=>{sel.has(i)?sel.delete(i):sel.add(i);b.setAttribute("aria-pressed",sel.has(i));upd()};g.appendChild(b)});
+COL.forEach((c,i)=>{const b=document.createElement("button");b.style.background=c[1];b.title=c[0];b.setAttribute("aria-label",c[0]);b.setAttribute("aria-pressed",i===0);
+b.onclick=()=>{[...$("sw").children].forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");$("body").setAttribute("fill",c[1]);$("lid").setAttribute("fill",c[1])};$("sw").appendChild(b)});
+$("name").oninput=e=>{$("nm").textContent=e.target.value.trim()||"Ma box";upd()};
+document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{cur=b.dataset.c;document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b));upd()});
+function total(){let t=BASE+[...sel].reduce((s,i)=>s+P[i][2],0);if($("name").value.trim())t+=PERSO;return t}
+function upd(){[...g.children].forEach((b,i)=>b.querySelector(".p").textContent=fmt(P[i][2]));
+const n=sel.size;$("tt").textContent=fmt(total());
+$("td").textContent=n?`${n} produit${n>1?"s":""} · boîte ${fmt(BASE)}${$("name").value.trim()?" · personnalisation "+fmt(PERSO):""} · livraison calculée ensuite`:"Ajoute au moins un produit"}
+$("go").onclick=()=>{const m=$("msg");m.style.display="block";
+m.textContent=sel.size?`Ta box « ${$("name").value.trim()||"sans nom"} » : ${[...sel].map(i=>P[i][1]).join(", ")}. Total ${fmt(total())} hors livraison. La commande en ligne arrive bientôt.`:"Ta box est vide : ajoute au moins un produit pour continuer."};
+upd();
+</script>
+</body>
+</html>
