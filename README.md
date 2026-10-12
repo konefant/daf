@@ -1,21 +1,20 @@
-# DAF — Box cadeaux personnalisables
+# DAF's Customizable Box
 
-Plateforme de box cadeaux personnalisables (France, Mali, Sénégal).
-Slogan de travail : « Ce n'est pas une boîte comme les autres. C'est ma boîte, faite pour moi. »
-
-## Statut
-Version 0.1 : page d'accueil et démo du configurateur de box (HTML/CSS/JS, sans backend).
-
-## Structure
-- `index.html` : la page (structure, design et script dans un seul fichier)
-- `assets/` : images, logo, icônes
-- `docs/` : cahier des charges et notes de conception
+Boutique de box cadeaux personnalisables (France, Mali, Sénégal), construite avec Next.js, TypeScript et React Three Fiber (3D).
 
 ## Lancer en local
-Ouvrir `index.html` dans un navigateur.
+```bash
+npm install
+npm run dev
+```
+Puis ouvrir http://localhost:3000
+
+## Structure
+- `src/app/` : les pages (accueil, catalogue, creer-ma-box, contact)
+- `src/components/` : Header, BoxViewer (boîte 3D)
+- `src/lib/` : produits, calcul des prix et devises
+- `public/` : logo et images
+- `docs/` : cahier des charges
 
 ## Déploiement
-Le site est publié automatiquement à chaque `git push` sur la branche `main`.
-
-## Prochaines étapes
-Voir la liste de suivi : catalogue réel, comptes clients, paiement (carte, Mobile Money), commandes, espace admin.
+Netlify, automatique à chaque push sur `main` (voir `netlify.toml`).
