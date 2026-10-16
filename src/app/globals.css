@@ -40,3 +40,41 @@ input[type=text],input[type=email],textarea{font:inherit;padding:12px 16px;borde
 .total small{display:block;opacity:.75}
 .foot{padding-top:40px;padding-bottom:40px;color:var(--soft);border-top:1px solid var(--line);margin-top:40px;font-size:.95rem}
 @media (max-width:800px){.hero,.builder{grid-template-columns:1fr}.stage{position:static}nav a{margin-left:12px;font-size:.95rem}}
+
+/* ===== v2 : parcours en 3 étapes ===== */
+body{background:linear-gradient(160deg,#fdf4ee 0%,#fae3e6 60%,#f6d3da 100%) fixed}
+@media (prefers-color-scheme:dark){body{background:#231019}}
+h1{color:var(--berry)}
+.cart{position:relative;margin-left:16px;font-size:1.3rem}
+.badge{position:absolute;top:-8px;right:-12px;background:var(--berry);color:var(--on-berry);border-radius:99px;font:700 .7rem "DM Sans",sans-serif;padding:2px 6px}
+.splash{max-width:520px;margin:10px auto 30px;border:1.5px solid var(--line);border-radius:36px;padding:34px 24px 36px;text-align:center;background:rgba(255,255,255,.35);display:flex;flex-direction:column;align-items:center;gap:8px}
+.splash h1{font-size:clamp(2rem,6vw,2.8rem)}
+.splash-box{width:100%;height:340px}
+.splash-logo{border-radius:50%;margin:6px 0 14px}
+.stepper{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px;margin:8px 0 26px;padding:12px;background:var(--rose);border-radius:14px}
+.stepper a{text-decoration:none;font-weight:500;color:var(--soft)}
+.stepper .on a{color:var(--ink);font-weight:700}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:24px}
+.panel h2{font-size:1.6rem;margin-bottom:8px}
+.stage h2{font-size:1.6rem;text-align:center;margin-bottom:10px}
+.stage{background:transparent;padding:0}
+.canvas{height:380px;background:rgba(255,255,255,.45);border-radius:26px}
+.ctrls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ctrls button,.chips button{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 14px;font:500 .9rem "DM Sans",sans-serif;cursor:pointer}
+.ctrls button[aria-pressed=true],.chips button[aria-pressed=true]{background:var(--berry);color:var(--on-berry);border-color:var(--berry)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.panel .sw{margin-top:8px}
+textarea,select{font:inherit;padding:12px 16px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);width:100%}
+.btn.wide{display:block;text-align:center;margin-top:22px}
+.btn.ghost{background:transparent;color:var(--bg);border:1.5px solid var(--bg)}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.card .add{display:block;margin-top:8px;font-size:.9rem;color:var(--soft)}
+.card[aria-pressed=true] .add{color:var(--berry);font-weight:700}
+.recap{list-style:none;padding:0;margin:10px 0}
+.recap li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.total{position:sticky;bottom:12px}
+.panel .total{position:static}
+.builder{align-items:start}
+@media (max-width:800px){.canvas{height:300px}.splash-box{height:280px}}

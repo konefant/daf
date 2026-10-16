@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
+import { BoxProvider } from "@/lib/box-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,9 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <Header />
-        <main>{children}</main>
-        <footer className="wrap foot">DAF&apos;s Customizable Box · Livraison en France, au Mali et au Sénégal · Version de démonstration</footer>
+        <BoxProvider>
+          <Header />
+          <main>{children}</main>
+          <footer className="wrap foot">DAF&apos;s Customizable Box · Livraison en France, au Mali et au Sénégal · Version de démonstration</footer>
+        </BoxProvider>
       </body>
     </html>
   );

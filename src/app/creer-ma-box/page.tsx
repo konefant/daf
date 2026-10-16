@@ -1,8 +1,10 @@
 "use client";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useState } from "react";
-import { BOX_COLORS, PRODUCTS } from "@/lib/products";
-import { BOX_BASE_PRICE, PERSONALIZATION_PRICE, boxTotal, formatPrice, type Currency } from "@/lib/pricing";
+import Stepper from "@/components/Stepper";
+import { useBox } from "@/lib/box-context";
+import { BOX_COLORS, FONT_OPTIONS, TEXT_COLORS } from "@/lib/products";
 
 const BoxViewer = dynamic(() => import("@/components/BoxViewer"), {
   ssr: false,
@@ -10,76 +12,64 @@ const BoxViewer = dynamic(() => import("@/components/BoxViewer"), {
 });
 
 export default function CreerMaBox() {
-  const [name, setName] = useState("");
-  const [color, setColor] = useState(BOX_COLORS[0].hex);
-  const [ribbon, setRibbon] = useState("#f0c2cb");
-  const [sel, setSel] = useState<string[]>([]);
-  const [cur, setCur] = useState<Currency>("EUR");
-
-  const toggle = (id: string) => setSel((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
-  const prices = PRODUCTS.filter((p) => sel.includes(p.id)).map((p) => p.price);
-  const total = boxTotal(prices, name.trim().length > 0);
+  const { box, update } = useBox();
+  const [auto, setAuto] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const clamp = (z: number) => Math.min(1.8, Math.max(0.7, z));
 
   return (
     <div className="wrap">
-      <section className="block">
-        <h2>Crée ta box</h2>
-        <p className="sub">Tourne la boîte avec ton doigt ou ta souris, change les couleurs et écris un prénom dessus.</p>
-        <div className="builder">
-          <div className="stage">
-            <div className="canvas"><BoxViewer color={color} ribbon={ribbon} name={name.trim()} /></div>
-            <div className="field">
-              <label htmlFor="nm">Prénom ou surnom sur la boîte</label>
-              <input id="nm" type="text" maxLength={14} value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex : Fanta, Ma Chérie…" />
-            </div>
-            <div className="field">
-              <span className="lbl">Couleur de la boîte</span>
-              <div className="sw" role="group" aria-label="Couleur de la boîte">
-                {BOX_COLORS.map((c) => (
-                  <button key={c.hex} title={c.name} aria-label={c.name} aria-pressed={color === c.hex} style={{ background: c.hex }} onClick={() => setColor(c.hex)} />
-                ))}
-              </div>
-            </div>
-            <div className="field">
-              <span className="lbl">Couleur du ruban</span>
-              <div className="sw" role="group" aria-label="Couleur du ruban">
-                {BOX_COLORS.concat([{ name: "Blanc", hex: "#ffffff" }]).map((c) => (
-                  <button key={c.hex} title={c.name} aria-label={c.name} aria-pressed={ribbon === c.hex} style={{ background: c.hex }} onClick={() => setRibbon(c.hex)} />
-                ))}
-              </div>
+      <Stepper current={1} />
+      <div className="builder">
+        <div className="stage">
+          <h2>Aperçu interactif 3D</h2>
+          <div className="canvas">
+            <BoxViewer color={box.boxColor} name={box.name.trim()} font={box.font} textColor={box.textColor} open={open} autoRotate={auto} zoom={zoom} />
+          </div>
+          <div className="ctrls" role="group" aria-label="Contrôles de l'aperçu">
+            <button aria-pressed={auto} onClick={() => setAuto(!auto)}>360° Rotation</button>
+            <button onClick={() => setZoom(clamp(zoom - 0.15))} aria-label="Dézoomer">−</button>
+            <button onClick={() => setZoom(clamp(zoom + 0.15))} aria-label="Zoomer">+</button>
+            <button aria-pressed={open} onClick={() => setOpen(!open)}>{open ? "Vue fermée" : "Vue ouverte"}</button>
+          </div>
+        </div>
+
+        <div className="panel">
+          <h2>Configuration de la box</h2>
+
+          <div className="field">
+            <label htmlFor="nm">1. Le prénom sur le couvercle</label>
+            <input id="nm" type="text" maxLength={14} value={box.name} onChange={(e) => update({ name: e.target.value })} placeholder="Ex : Sarah" />
+          </div>
+          <div className="chips" role="group" aria-label="Police">
+            {FONT_OPTIONS.map((f) => (
+              <button key={f.key} aria-pressed={box.font === f.key} onClick={() => update({ font: f.key })}>{f.label}</button>
+            ))}
+          </div>
+          <div className="sw" role="group" aria-label="Couleur du texte">
+            {TEXT_COLORS.map((c) => (
+              <button key={c.hex} title={c.name} aria-label={c.name} aria-pressed={box.textColor === c.hex} style={{ background: c.hex }} onClick={() => update({ textColor: c.hex })} />
+            ))}
+          </div>
+
+          <div className="field">
+            <span className="lbl">2. Couleur de la boîte</span>
+            <div className="sw" role="group" aria-label="Couleur de la boîte">
+              {BOX_COLORS.map((c) => (
+                <button key={c.hex} title={c.name} aria-label={c.name} aria-pressed={box.boxColor === c.hex} style={{ background: c.hex }} onClick={() => update({ boxColor: c.hex })} />
+              ))}
             </div>
           </div>
 
-          <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-              <h3>Tes produits</h3>
-              <div className="seg" role="group" aria-label="Devise">
-                <button aria-pressed={cur === "EUR"} onClick={() => setCur("EUR")}>EUR</button>
-                <button aria-pressed={cur === "XOF"} onClick={() => setCur("XOF")}>FCFA</button>
-              </div>
-            </div>
-            <div className="grid">
-              {PRODUCTS.map((p) => (
-                <button key={p.id} className="card" aria-pressed={sel.includes(p.id)} onClick={() => toggle(p.id)}>
-                  <span className="e" aria-hidden>{p.emoji}</span>
-                  <b>{p.name}</b>
-                  <span className="pr">{formatPrice(p.price, cur)}</span>
-                </button>
-              ))}
-            </div>
-            <div className="total" aria-live="polite">
-              <div>
-                <strong>{formatPrice(total, cur)}</strong>
-                <small>
-                  {sel.length} produit{sel.length > 1 ? "s" : ""} · boîte {formatPrice(BOX_BASE_PRICE, cur)}
-                  {name.trim() ? ` · personnalisation ${formatPrice(PERSONALIZATION_PRICE, cur)}` : ""} · livraison calculée ensuite
-                </small>
-              </div>
-              <button className="btn" disabled title="Le panier arrive bientôt">Ajouter au panier (bientôt)</button>
-            </div>
+          <div className="field">
+            <label htmlFor="msg">3. Message secret à l&apos;intérieur (optionnel)</label>
+            <textarea id="msg" rows={3} maxLength={160} value={box.message} onChange={(e) => update({ message: e.target.value })} placeholder="Un mot doux sous le couvercle" />
           </div>
+
+          <Link className="btn wide" href="/catalogue">Choisir les produits →</Link>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
