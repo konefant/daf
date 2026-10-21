@@ -90,9 +90,9 @@ function GiftBox({ color, ribbon = "#ffffff", name, font = "chic", textColor = "
         </mesh>
 
         {/* nœud sur la face avant */}
-        {/* <group position={[KNOT_X, 0.05, lidD + 0.04]}>
+        <group position={[KNOT_X, 0.05, lidD + 0.04]}>
           <Knot ribbon={ribbon} />
-        </group> */}
+        </group>
 
         {/* prénom sur le dessus du couvercle */}
         <Text
